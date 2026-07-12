@@ -4,3 +4,4 @@ export {
   proxyConsole,
   type ProxyConsoleOptions,
 } from './proxyConsole.js';
+export { toPosixPath } from './toPosixPath.js';

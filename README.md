@@ -70,6 +70,17 @@ try {
 console.log(logs);
 ```
 
+### toPosixPath
+
+Converts backslash path separators to POSIX forward slashes.
+
+```ts
+import { toPosixPath } from '@rstackjs/test-utils';
+
+const normalizedPath = toPosixPath('C:\\project\\src\\index.ts');
+// C:/project/src/index.ts
+```
+
 ## License
 
 [MIT](./LICENSE).
