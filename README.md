@@ -49,6 +49,17 @@ findFile(files, (file) => file.endsWith('.css'));
 findFile(files, 'index.abcdef12.js', { ignoreHash: false });
 ```
 
+### getFileContent
+
+Returns the content of the first file matched by the same matcher and options supported by `findFile`.
+
+```ts
+import { getFileContent } from '@rstackjs/test-utils';
+
+const content = getFileContent(files, 'index.js');
+// console.log("hello")
+```
+
 ### getRandomPort
 
 Returns an available TCP port that has not already been returned by the current process.

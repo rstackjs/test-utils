@@ -3,6 +3,7 @@ export {
   findFile,
   type FindFileOptions,
 } from './findFile.js';
+export { getFileContent } from './getFileContent.js';
 export { getRandomPort, isPortAvailable } from './getRandomPort.js';
 export {
   type ConsoleMethod,
