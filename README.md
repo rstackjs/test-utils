@@ -105,6 +105,20 @@ try {
 console.log(logs);
 ```
 
+### readDirContents
+
+Recursively reads UTF-8 files from a directory and returns a file-content map keyed by sorted absolute paths.
+
+```ts
+import { readDirContents } from '@rstackjs/test-utils';
+
+const files = await readDirContents('./dist');
+
+for (const [filePath, content] of Object.entries(files)) {
+  console.log(filePath, content);
+}
+```
+
 ### toPosixPath
 
 Converts backslash path separators to POSIX forward slashes.

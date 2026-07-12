@@ -10,4 +10,5 @@ export {
   proxyConsole,
   type ProxyConsoleOptions,
 } from './proxyConsole.js';
+export { readDirContents } from './readDirContents.js';
 export { toPosixPath } from './toPosixPath.js';
