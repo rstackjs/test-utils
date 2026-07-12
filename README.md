@@ -99,21 +99,24 @@ const available = await isPortAvailable(30000);
 
 ### proxyConsole
 
-Captures formatted console output and removes ANSI control characters. By default, it captures `log`, `warn`, `info`, and `error`.
+Captures console output and removes ANSI control characters. By default, it captures `log`, `warn`, `info`, and `error`.
 
 ```ts
 import { proxyConsole } from '@rstackjs/test-utils';
 
-const { logs, restore } = proxyConsole({ types: ['warn', 'error'] });
+const logHelper = proxyConsole({ types: ['warn', 'error'] });
 
 try {
   console.warn('Something happened');
   console.error('Something failed');
+
+  await logHelper.expectLog('Something happened');
+  logHelper.expectNoLog('Unexpected error');
 } finally {
-  restore();
+  logHelper.restore();
 }
 
-console.log(logs);
+console.log(logHelper.logs);
 ```
 
 ### readDirContents

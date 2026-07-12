@@ -7,7 +7,10 @@ export { getDistFiles } from './getDistFiles.js';
 export { getFileContent } from './getFileContent.js';
 export { getRandomPort, isPortAvailable } from './getRandomPort.js';
 export {
-  type ConsoleMethod,
+  type ConsoleType,
+  createLogHelper,
+  type ExtendedLogHelper,
+  type LogHelper,
   proxyConsole,
   type ProxyConsoleOptions,
 } from './proxyConsole.js';
