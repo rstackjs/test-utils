@@ -41,6 +41,16 @@ You can optionally provide the starting port. If it is unavailable, the next ava
 const port = await getRandomPort(30000);
 ```
 
+### isPortAvailable
+
+Checks whether a TCP port is currently available to bind. The port is released before the promise resolves.
+
+```ts
+import { isPortAvailable } from '@rstackjs/test-utils';
+
+const available = await isPortAvailable(30000);
+```
+
 ## License
 
 [MIT](./LICENSE).

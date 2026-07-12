@@ -2,7 +2,12 @@ import net from 'node:net';
 
 const usedPorts = new Set<number>();
 
-const isPortAvailable = (port: number) => {
+/**
+ * Check whether a TCP port is available to bind.
+ *
+ * The port is released before the returned promise resolves.
+ */
+export const isPortAvailable = (port: number) => {
   try {
     const server = net.createServer().listen(port);
     return new Promise<boolean>((resolve) => {

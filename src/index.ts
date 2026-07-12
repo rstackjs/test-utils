@@ -1,1 +1,1 @@
-export { getRandomPort } from './getRandomPort.js';
+export { getRandomPort, isPortAvailable } from './getRandomPort.js';
