@@ -141,6 +141,21 @@ const normalizedPath = toPosixPath('C:\\project\\src\\index.ts');
 // C:/project/src/index.ts
 ```
 
+### waitFor
+
+Waits for a duration or polls a synchronous or asynchronous condition until it returns `true`.
+
+```ts
+import { waitFor } from '@rstackjs/test-utils';
+
+await waitFor(() => server.isReady(), {
+  interval: 50,
+  timeout: 5000,
+});
+```
+
+Condition polling uses a 100ms interval and a 5-second timeout by default.
+
 ## License
 
 [MIT](./LICENSE).

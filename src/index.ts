@@ -13,3 +13,8 @@ export {
 } from './proxyConsole.js';
 export { readDirContents } from './readDirContents.js';
 export { toPosixPath } from './toPosixPath.js';
+export {
+  waitFor,
+  type WaitForCondition,
+  type WaitForOptions,
+} from './waitFor.js';
