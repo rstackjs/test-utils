@@ -23,6 +23,24 @@ npm add @rstackjs/test-utils -D
 bun add @rstackjs/test-utils -D
 ```
 
+## Usage
+
+### getRandomPort
+
+Returns an available TCP port that has not already been returned by the current process.
+
+```ts
+import { getRandomPort } from '@rstackjs/test-utils';
+
+const port = await getRandomPort();
+```
+
+You can optionally provide the starting port. If it is unavailable, the next available port is returned.
+
+```ts
+const port = await getRandomPort(30000);
+```
+
 ## License
 
 [MIT](./LICENSE).

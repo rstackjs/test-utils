@@ -19,7 +19,7 @@
     "dev": "rs lib -w",
     "lint": "rs lint && prettier -c .",
     "lint:write": "rs lint --fix && prettier -w .",
-    "test": "rs test --passWithNoTests",
+    "test": "rs test",
     "bump": "pnpx bumpp"
   },
   "devDependencies": {
