@@ -25,6 +25,30 @@ bun add @rstackjs/test-utils -D
 
 ## Usage
 
+### findFile
+
+Finds the first matching path in a file-content map. String matchers use suffix matching, and content hashes are ignored by default.
+
+```ts
+import { findFile } from '@rstackjs/test-utils';
+
+const files = {
+  '/dist/index.abcdef12.js': 'console.log("hello")',
+  '/dist/styles.css': '.root {}',
+};
+
+const scriptPath = findFile(files, 'index.js');
+// /dist/index.abcdef12.js
+```
+
+The matcher can be a string, regular expression, or function. Set `ignoreHash` to `false` to match the original path.
+
+```ts
+findFile(files, /styles\.css$/);
+findFile(files, (file) => file.endsWith('.css'));
+findFile(files, 'index.abcdef12.js', { ignoreHash: false });
+```
+
 ### getRandomPort
 
 Returns an available TCP port that has not already been returned by the current process.
