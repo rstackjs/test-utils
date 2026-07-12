@@ -51,6 +51,25 @@ import { isPortAvailable } from '@rstackjs/test-utils';
 const available = await isPortAvailable(30000);
 ```
 
+### proxyConsole
+
+Captures formatted console output and removes ANSI control characters. By default, it captures `log`, `warn`, `info`, and `error`.
+
+```ts
+import { proxyConsole } from '@rstackjs/test-utils';
+
+const { logs, restore } = proxyConsole({ types: ['warn', 'error'] });
+
+try {
+  console.warn('Something happened');
+  console.error('Something failed');
+} finally {
+  restore();
+}
+
+console.log(logs);
+```
+
 ## License
 
 [MIT](./LICENSE).
