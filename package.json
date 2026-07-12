@@ -1,6 +1,6 @@
 {
   "name": "@rstackjs/test-utils",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "repository": "https://github.com/rstackjs/test-utils",
   "license": "MIT",
   "type": "module",
