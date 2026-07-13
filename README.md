@@ -201,7 +201,7 @@ await waitFor(() => server.isReady(), {
 });
 ```
 
-Condition polling uses a 100ms interval and a 5-second timeout by default.
+Condition polling uses a 50ms interval and a 5-second timeout by default.
 
 ### waitForFile
 

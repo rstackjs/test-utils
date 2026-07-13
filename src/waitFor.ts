@@ -3,7 +3,7 @@ export type WaitForCondition = () => boolean | Promise<boolean>;
 export type WaitForOptions = {
   /**
    * Delay between condition checks in milliseconds.
-   * @default 100
+   * @default 50
    */
   interval?: number;
   /**
@@ -35,7 +35,7 @@ export async function waitFor(
     return delay(millisecondsOrCondition);
   }
 
-  const { interval = 100, timeout = 5000 } = options;
+  const { interval = 50, timeout = 5000 } = options;
   const startTime = Date.now();
 
   while (true) {
