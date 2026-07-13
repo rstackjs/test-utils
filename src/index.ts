@@ -1,3 +1,4 @@
+export { editFile, type FileEditor } from './editFile.js';
 export {
   type FileMatcher,
   findFile,

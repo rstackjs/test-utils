@@ -25,6 +25,18 @@ bun add @rstackjs/test-utils -D
 
 ## Usage
 
+### editFile
+
+Edits a file using a sync or async editor function.
+
+```ts
+import { editFile } from '@rstackjs/test-utils';
+
+await editFile('src/index.ts', (content) =>
+  content.replace('const value = 1', 'const value = 2'),
+);
+```
+
 ### findFile
 
 Finds the first matching path in a file-content map. String matchers use suffix matching, and content hashes are ignored by default.
