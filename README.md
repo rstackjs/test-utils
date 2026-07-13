@@ -25,6 +25,16 @@ bun add @rstackjs/test-utils -D
 
 ## Usage
 
+### copyNodeModules
+
+Replaces `node_modules` with a copy of `_node_modules` in the given directory. It uses the current working directory by default.
+
+```ts
+import { copyNodeModules } from '@rstackjs/test-utils';
+
+const nodeModulesPath = await copyNodeModules();
+```
+
 ### editFile
 
 Edits a file using a sync or async editor function.
@@ -192,6 +202,28 @@ await waitFor(() => server.isReady(), {
 ```
 
 Condition polling uses a 100ms interval and a 5-second timeout by default.
+
+### waitForFile
+
+Waits until a file path exists.
+
+```ts
+import { waitForFile } from '@rstackjs/test-utils';
+
+await waitForFile('dist/index.js');
+```
+
+### waitForFileContent
+
+Waits until a UTF-8 file includes the expected content.
+
+```ts
+import { waitForFileContent } from '@rstackjs/test-utils';
+
+await waitForFileContent('dist/index.js', 'compiled successfully');
+```
+
+Both helpers accept the same `interval` and `timeout` options as `waitFor`.
 
 ## License
 

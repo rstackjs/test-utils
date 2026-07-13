@@ -1,3 +1,4 @@
+export { copyNodeModules } from './copyNodeModules.js';
 export { editFile, type FileEditor } from './editFile.js';
 export {
   type FileMatcher,
@@ -24,3 +25,5 @@ export {
   type WaitForCondition,
   type WaitForOptions,
 } from './waitFor.js';
+export { waitForFile } from './waitForFile.js';
+export { waitForFileContent } from './waitForFileContent.js';
