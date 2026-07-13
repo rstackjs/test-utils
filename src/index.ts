@@ -8,6 +8,7 @@ export { getDistFiles } from './getDistFiles.js';
 export { getFileContent } from './getFileContent.js';
 export { getRandomPort, isPortAvailable } from './getRandomPort.js';
 export { normalizeEol } from './normalizeEol.js';
+export { prepareDist } from './prepareDist.js';
 export {
   type ConsoleType,
   createLogHelper,

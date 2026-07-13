@@ -142,6 +142,17 @@ const content = normalizeEol('first line\r\nsecond line\r\n');
 // first line\nsecond line\n
 ```
 
+### prepareDist
+
+Removes a dist directory and returns its absolute path. It removes `dist` from the current working directory by default.
+
+```ts
+import { prepareDist } from '@rstackjs/test-utils';
+
+const distPath = await prepareDist();
+const customDistPath = await prepareDist('dist-custom');
+```
+
 ### readDirContents
 
 Recursively reads UTF-8 files from a directory and returns a file-content map keyed by sorted POSIX absolute paths.
