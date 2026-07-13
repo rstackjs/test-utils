@@ -119,6 +119,17 @@ try {
 console.log(logHelper.logs);
 ```
 
+### normalizeEol
+
+Normalizes CRLF line endings to LF.
+
+```ts
+import { normalizeEol } from '@rstackjs/test-utils';
+
+const content = normalizeEol('first line\r\nsecond line\r\n');
+// first line\nsecond line\n
+```
+
 ### readDirContents
 
 Recursively reads UTF-8 files from a directory and returns a file-content map keyed by sorted POSIX absolute paths.
