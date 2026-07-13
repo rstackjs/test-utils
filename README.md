@@ -121,7 +121,7 @@ console.log(logHelper.logs);
 
 ### readDirContents
 
-Recursively reads UTF-8 files from a directory and returns a file-content map keyed by sorted absolute paths.
+Recursively reads UTF-8 files from a directory and returns a file-content map keyed by sorted POSIX absolute paths.
 
 ```ts
 import { readDirContents } from '@rstackjs/test-utils';

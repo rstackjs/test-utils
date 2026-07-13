@@ -2,7 +2,7 @@ import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'rstack/test';
-import { getDistFiles } from '../src/index';
+import { getDistFiles, toPosixPath } from '../src/index';
 
 test('should read dist files and optionally include source maps', async () => {
   const distPath = await mkdtemp(join(tmpdir(), 'rstack-test-utils-'));
@@ -20,13 +20,13 @@ test('should read dist files and optionally include source maps', async () => {
     ]);
 
     expect(await getDistFiles(distPath)).toEqual({
-      [indexPath]: 'console.log("hello")',
-      [stylePath]: '.root {}',
+      [toPosixPath(indexPath)]: 'console.log("hello")',
+      [toPosixPath(stylePath)]: '.root {}',
     });
     expect(await getDistFiles(distPath, true)).toEqual({
-      [indexPath]: 'console.log("hello")',
-      [sourceMapPath]: '{}',
-      [stylePath]: '.root {}',
+      [toPosixPath(indexPath)]: 'console.log("hello")',
+      [toPosixPath(sourceMapPath)]: '{}',
+      [toPosixPath(stylePath)]: '.root {}',
     });
   } finally {
     await rm(distPath, { force: true, recursive: true });

@@ -1,5 +1,6 @@
 import { readdir, readFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
+import { toPosixPath } from './toPosixPath.js';
 
 const collectFilePaths = async (directoryPath: string): Promise<string[]> => {
   const entries = await readdir(directoryPath, { withFileTypes: true });
@@ -19,7 +20,7 @@ const collectFilePaths = async (directoryPath: string): Promise<string[]> => {
 /**
  * Recursively read UTF-8 files from a directory.
  *
- * The returned record uses sorted absolute file paths as keys.
+ * The returned record uses sorted POSIX absolute file paths as keys.
  */
 export const readDirContents = async (
   directoryPath: string,
@@ -29,7 +30,7 @@ export const readDirContents = async (
 
   const entries = await Promise.all(
     filePaths.map(async (filePath) => [
-      filePath,
+      toPosixPath(filePath),
       await readFile(filePath, 'utf-8'),
     ]),
   );
