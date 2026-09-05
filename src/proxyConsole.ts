@@ -38,7 +38,7 @@ const matchPattern = (
 export const createLogHelper = () => {
   const logs: string[] = [];
   const originalLogs: string[] = [];
-  let logStartIndex = 0;
+  let rawOutput = '';
 
   const logPatterns = new Set<{
     pattern: LogPattern;
@@ -48,13 +48,14 @@ export const createLogHelper = () => {
 
   const clearLogs = () => {
     logs.splice(0);
-    logStartIndex = originalLogs.length;
+    rawOutput = '';
   };
 
-  const addLog = (input: string) => {
+  const addLog = (input: string, options?: { newline?: boolean }) => {
     const log = stripAnsi(input);
     logs.push(log);
     originalLogs.push(input);
+    rawOutput += options?.newline ? `${input}\n` : input;
 
     for (const { pattern, resolve, options } of logPatterns) {
       if (matchPattern(log, pattern, options)) {
@@ -116,7 +117,7 @@ export const createLogHelper = () => {
 
   /** Assert the number of non-overlapping matches in the captured output. */
   const expectLogTimes = (pattern: string | RegExp, times: number) => {
-    const output = stripAnsi(originalLogs.slice(logStartIndex).join(''));
+    const output = stripAnsi(rawOutput);
     let actualTimes = 0;
 
     if (typeof pattern === 'string') {
@@ -191,7 +192,7 @@ export const proxyConsole = ({
           return typeof arg === 'object' ? JSON.stringify(arg) : String(arg);
         })
         .join(' ');
-      logHelper.addLog(logMessage);
+      logHelper.addLog(logMessage, { newline: true });
     };
   }
 

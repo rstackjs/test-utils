@@ -18,6 +18,8 @@ test('should capture console output and expose the Rsbuild log helpers', async (
       'second log',
     ]);
     expect(() => logHelper.expectNoLog('missing log')).not.toThrow();
+    logHelper.expectLogTimes('{"value":1}second log', 0);
+    logHelper.expectLogTimes(/^second log$/m, 1);
 
     logHelper.clearLogs();
     expect(logHelper.logs).toEqual([]);
