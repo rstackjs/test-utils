@@ -75,6 +75,22 @@ test('should count strings literally and ignore ANSI control characters', () => 
   logHelper.expectLogTimes('missing', 0);
 });
 
+test('should count non-overlapping string matches', () => {
+  const logHelper = createLogHelper();
+  logHelper.addLog('aaaaa');
+
+  logHelper.expectLogTimes('aa', 2);
+  logHelper.expectLogTimes('aaa', 1);
+});
+
+test('should count empty strings at each position without looping forever', () => {
+  const logHelper = createLogHelper();
+  logHelper.expectLogTimes('', 1);
+
+  logHelper.addLog('abc');
+  logHelper.expectLogTimes('', 4);
+});
+
 test('should preserve regular expression flags and lastIndex when counting', () => {
   const logHelper = createLogHelper();
   logHelper.addLog('READY\nready\nnot ready\n');

@@ -114,14 +114,26 @@ export const createLogHelper = () => {
 
   /** Assert the number of non-overlapping matches in the captured output. */
   const expectLogTimes = (pattern: string | RegExp, times: number) => {
-    const regexp =
-      typeof pattern === 'string'
-        ? new RegExp(pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g')
-        : new RegExp(
-            pattern.source,
-            pattern.flags.includes('g') ? pattern.flags : `${pattern.flags}g`,
-          );
-    const actualTimes = logs.join('').match(regexp)?.length ?? 0;
+    const output = logs.join('');
+    let actualTimes = 0;
+
+    if (typeof pattern === 'string') {
+      let position = 0;
+      while (position <= output.length) {
+        position = output.indexOf(pattern, position);
+        if (position === -1) {
+          break;
+        }
+        actualTimes++;
+        position += pattern.length || 1;
+      }
+    } else {
+      const regexp = new RegExp(
+        pattern.source,
+        pattern.flags.includes('g') ? pattern.flags : `${pattern.flags}g`,
+      );
+      actualTimes = output.match(regexp)?.length ?? 0;
+    }
 
     if (actualTimes !== times) {
       const title = styleText(['bold', 'red'], 'Unexpected log count.');
