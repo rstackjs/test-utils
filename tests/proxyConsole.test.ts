@@ -75,6 +75,23 @@ test('should count strings literally and ignore ANSI control characters', () => 
   logHelper.expectLogTimes('missing', 0);
 });
 
+test('should strip ANSI sequences after joining output chunks', () => {
+  const logHelper = createLogHelper();
+  const message = 'watching for changes...';
+
+  logHelper.addLog('watching for \u001B[3');
+  logHelper.addLog('9mchanges...\n');
+  logHelper.expectLogTimes(message, 1);
+  logHelper.expectLogTimes(/watching for changes\.\.\./, 1);
+
+  logHelper.clearLogs();
+  logHelper.expectLogTimes(message, 0);
+  logHelper.addLog('watching for \u001B[3');
+  logHelper.addLog('9mchanges...\n');
+  logHelper.expectLogTimes(message, 1);
+  expect(logHelper.originalLogs).toHaveLength(4);
+});
+
 test('should count non-overlapping string matches', () => {
   const logHelper = createLogHelper();
   logHelper.addLog('aaaaa');
