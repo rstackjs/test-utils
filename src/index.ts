@@ -4,6 +4,7 @@ export {
   type FileMatcher,
   findFile,
   type FindFileOptions,
+  findFiles,
 } from './findFile.js';
 export { getDistFiles } from './getDistFiles.js';
 export { getFileContent } from './getFileContent.js';

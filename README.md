@@ -71,6 +71,17 @@ findFile(files, (file) => file.endsWith('.css'));
 findFile(files, 'index.abcdef12.js', { ignoreHash: false });
 ```
 
+### findFiles
+
+Finds all matching paths with the same matcher and options as `findFile`. Returns an empty array when no files match.
+
+```ts
+import { findFiles } from '@rstackjs/test-utils';
+
+const cssFiles = findFiles(files, '.css');
+// ['/dist/styles.css']
+```
+
 ### getDistFiles
 
 Recursively reads UTF-8 files from a dist directory. Source map files are excluded by default.

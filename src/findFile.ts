@@ -45,3 +45,17 @@ export const findFile = (
 
   throw new Error(`Unable to find file matching "${matcher.toString()}"`);
 };
+
+/** Find all file paths that match the provided matcher. */
+export const findFiles = (
+  files: Record<string, string>,
+  matcher: FileMatcher,
+  options: FindFileOptions = {},
+): string[] => {
+  const { ignoreHash = true } = options;
+  const matcherFn = toMatcher(matcher);
+
+  return Object.keys(files).filter((file) =>
+    matcherFn(ignoreHash ? file.replace(HASH_PATTERN, '') : file),
+  );
+};
