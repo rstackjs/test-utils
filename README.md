@@ -142,7 +142,7 @@ try {
 console.log(logHelper.logs);
 ```
 
-`expectLogTimes(pattern, times)` synchronously asserts the number of non-overlapping matches in the captured output. It accepts a literal string or a regular expression and joins output chunks before counting, so repeated messages in one chunk and messages split across chunks are counted correctly. It does not wait for future output. Call `clearLogs()` to reset the captured output before checking another build.
+`expectLogTimes(pattern, times)` synchronously asserts how many times a string or regular expression matches the captured output.
 
 ### normalizeEol
 
