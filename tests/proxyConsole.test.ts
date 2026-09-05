@@ -1,5 +1,5 @@
 import { expect, test } from 'rstack/test';
-import { proxyConsole } from '../src/index';
+import { createLogHelper, proxyConsole } from '../src/index';
 
 test('should capture console output and expose the Rsbuild log helpers', async () => {
   const originalLog = console.log;
@@ -18,6 +18,8 @@ test('should capture console output and expose the Rsbuild log helpers', async (
       'second log',
     ]);
     expect(() => logHelper.expectNoLog('missing log')).not.toThrow();
+    logHelper.expectLogTimes('{"value":1}second log', 0);
+    logHelper.expectLogTimes(/^second log$/m, 1);
 
     logHelper.clearLogs();
     expect(logHelper.logs).toEqual([]);
@@ -44,4 +46,31 @@ test('should support strict and POSIX log matching', async () => {
   } finally {
     logHelper.restore();
   }
+});
+
+test('should count log occurrences across output chunks', () => {
+  const logHelper = createLogHelper();
+  const message = 'watching for changes...';
+
+  logHelper.addLog(`${message}\n${message}\nwatching for `);
+  logHelper.addLog('changes...\n');
+  logHelper.expectLogTimes(message, 3);
+  logHelper.expectLogTimes(/watching for changes\.\.\./, 3);
+
+  expect(() => logHelper.expectLogTimes(message, 1)).toThrow(
+    'Expected: 1\nReceived: 3',
+  );
+
+  logHelper.clearLogs();
+  logHelper.expectLogTimes(message, 0);
+  logHelper.addLog(message);
+  logHelper.expectLogTimes(message, 1);
+});
+
+test('should strip ANSI sequences after joining output chunks', () => {
+  const logHelper = createLogHelper();
+
+  logHelper.addLog('watching for \u001B[3');
+  logHelper.addLog('9mchanges...\n');
+  logHelper.expectLogTimes('watching for changes...', 1);
 });

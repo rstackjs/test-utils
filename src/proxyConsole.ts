@@ -38,6 +38,7 @@ const matchPattern = (
 export const createLogHelper = () => {
   const logs: string[] = [];
   const originalLogs: string[] = [];
+  let rawOutput = '';
 
   const logPatterns = new Set<{
     pattern: LogPattern;
@@ -47,12 +48,14 @@ export const createLogHelper = () => {
 
   const clearLogs = () => {
     logs.splice(0);
+    rawOutput = '';
   };
 
-  const addLog = (input: string) => {
+  const addLog = (input: string, options?: { newline?: boolean }) => {
     const log = stripAnsi(input);
     logs.push(log);
     originalLogs.push(input);
+    rawOutput += options?.newline ? `${input}\n` : input;
 
     for (const { pattern, resolve, options } of logPatterns) {
       if (matchPattern(log, pattern, options)) {
@@ -112,6 +115,38 @@ export const createLogHelper = () => {
     }
   };
 
+  /** Assert the number of non-overlapping matches in the captured output. */
+  const expectLogTimes = (pattern: string | RegExp, times: number) => {
+    const output = stripAnsi(rawOutput);
+    let actualTimes = 0;
+
+    if (typeof pattern === 'string') {
+      let position = 0;
+      while (position <= output.length) {
+        position = output.indexOf(pattern, position);
+        if (position === -1) {
+          break;
+        }
+        actualTimes++;
+        position += pattern.length || 1;
+      }
+    } else {
+      const regexp = new RegExp(
+        pattern.source,
+        pattern.flags.includes('g') ? pattern.flags : `${pattern.flags}g`,
+      );
+      actualTimes = output.match(regexp)?.length ?? 0;
+    }
+
+    if (actualTimes !== times) {
+      const title = styleText(['bold', 'red'], 'Unexpected log count.');
+      const expected = styleText('yellow', pattern.toString());
+      throw new Error(
+        `${title}\nPattern: ${expected}\nExpected: ${times}\nReceived: ${actualTimes}\nGet:\n${originalLogs.join('\n')}`,
+      );
+    }
+  };
+
   return {
     logs,
     originalLogs,
@@ -119,6 +154,7 @@ export const createLogHelper = () => {
     clearLogs,
     expectLog,
     expectNoLog,
+    expectLogTimes,
   };
 };
 
@@ -156,7 +192,7 @@ export const proxyConsole = ({
           return typeof arg === 'object' ? JSON.stringify(arg) : String(arg);
         })
         .join(' ');
-      logHelper.addLog(logMessage);
+      logHelper.addLog(logMessage, { newline: true });
     };
   }
 

@@ -133,6 +133,7 @@ try {
   console.error('Something failed');
 
   await logHelper.expectLog('Something happened');
+  logHelper.expectLogTimes('Something happened', 1);
   logHelper.expectNoLog('Unexpected error');
 } finally {
   logHelper.restore();
@@ -140,6 +141,8 @@ try {
 
 console.log(logHelper.logs);
 ```
+
+`expectLogTimes(pattern, times)` synchronously asserts how many times a string or regular expression matches the captured output.
 
 ### normalizeEol
 
