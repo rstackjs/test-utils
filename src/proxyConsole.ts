@@ -121,7 +121,7 @@ export const createLogHelper = () => {
             pattern.source,
             pattern.flags.includes('g') ? pattern.flags : `${pattern.flags}g`,
           );
-    const actualTimes = Array.from(logs.join('').matchAll(regexp)).length;
+    const actualTimes = logs.join('').match(regexp)?.length ?? 0;
 
     if (actualTimes !== times) {
       const title = styleText(['bold', 'red'], 'Unexpected log count.');
