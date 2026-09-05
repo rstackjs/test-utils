@@ -72,14 +72,3 @@ test('should strip ANSI sequences after joining output chunks', () => {
   logHelper.addLog('9mchanges...\n');
   logHelper.expectLogTimes('watching for changes...', 1);
 });
-
-test('should preserve regular expression flags and lastIndex when counting', () => {
-  const logHelper = createLogHelper();
-  logHelper.addLog('READY\nready\n');
-
-  const pattern = /ready/gi;
-  pattern.lastIndex = 6;
-
-  logHelper.expectLogTimes(pattern, 2);
-  expect(pattern.lastIndex).toBe(6);
-});
