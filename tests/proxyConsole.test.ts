@@ -1,5 +1,5 @@
 import { expect, test } from 'rstack/test';
-import { proxyConsole } from '../src/index';
+import { createLogHelper, proxyConsole } from '../src/index';
 
 test('should capture console output and expose the Rsbuild log helpers', async () => {
   const originalLog = console.log;
@@ -18,6 +18,7 @@ test('should capture console output and expose the Rsbuild log helpers', async (
       'second log',
     ]);
     expect(() => logHelper.expectNoLog('missing log')).not.toThrow();
+    logHelper.expectLogTimes('second log', 1);
 
     logHelper.clearLogs();
     expect(logHelper.logs).toEqual([]);
@@ -44,4 +45,45 @@ test('should support strict and POSIX log matching', async () => {
   } finally {
     logHelper.restore();
   }
+});
+
+test('should count log occurrences across output chunks', () => {
+  const logHelper = createLogHelper();
+  const message = 'watching for changes...';
+
+  logHelper.expectLogTimes(message, 0);
+  logHelper.addLog(`${message}\n${message}\nwatching for `);
+  logHelper.addLog('changes...\n');
+  logHelper.expectLogTimes(message, 3);
+
+  expect(() => logHelper.expectLogTimes(message, 1)).toThrow(
+    'Expected: 1\nReceived: 3',
+  );
+
+  logHelper.clearLogs();
+  logHelper.expectLogTimes(message, 0);
+  logHelper.addLog(message);
+  logHelper.expectLogTimes(message, 1);
+});
+
+test('should count strings literally and ignore ANSI control characters', () => {
+  const logHelper = createLogHelper();
+  const message = 'ready [web] (entry.js) .*+?^${}|\\';
+
+  logHelper.addLog(`\u001B[32m${message}\u001B[39m\n${message}`);
+  logHelper.expectLogTimes(message, 2);
+  logHelper.expectLogTimes('missing', 0);
+});
+
+test('should preserve regular expression flags and lastIndex when counting', () => {
+  const logHelper = createLogHelper();
+  logHelper.addLog('READY\nready\nnot ready\n');
+
+  logHelper.expectLogTimes(/^ready$/im, 2);
+  const pattern = /ready/gi;
+  pattern.lastIndex = 6;
+
+  logHelper.expectLogTimes(pattern, 3);
+  logHelper.expectLogTimes(pattern, 3);
+  expect(pattern.lastIndex).toBe(6);
 });
