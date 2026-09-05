@@ -130,6 +130,21 @@ import { isPortAvailable } from '@rstackjs/test-utils';
 const available = await isPortAvailable(30000);
 ```
 
+### occupyPort
+
+Occupies an available TCP port until `close()` is called. The host defaults to `0.0.0.0`.
+
+```ts
+import { occupyPort } from '@rstackjs/test-utils';
+
+const { port, close } = await occupyPort();
+try {
+  // Test behavior when this port is occupied.
+} finally {
+  await close();
+}
+```
+
 ### proxyConsole
 
 Captures console output and removes ANSI control characters. By default, it captures `log`, `warn`, `info`, and `error`.
